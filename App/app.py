@@ -15,11 +15,12 @@ st.set_page_config(
 # Load Data
 @st.cache_data
 def load_data():
-    # Define the file path
-    filename = "G:\My Drive\Colab Notebooks\Mushroom\mushrooms_dataset.csv"
+
+    ## Define the file path
+    filename = "G:\My Drive\Colab Notebooks\Mushroom\Data\Datasets\mushroom.pkl"
 
     # Load your data here
-    df = pd.read_csv(filename)
+    df = pd.read_pickle(filename)
     return df
 
 df = load_data()
@@ -102,4 +103,27 @@ st.header("Dataset Overview")
 # Your code to display dataset overview or any other information.
 # Display dataset overview
 st.header("Dataset Overview")
-st.dataframe(df.describe())
+feature_groups = {
+    'Cap Characteristics': ['cap-shape', 'cap-surface', 'cap-color'],
+    'Gill Characteristics': ['odor', 'gill-attachment', 'gill-spacing', 'gill-size', 'gill-color'],
+    'Stalk Characteristics': ['stalk-shape', 'stalk-root', 'stalk-surface-above-ring', 'stalk-surface-below-ring', 'stalk-color-above-ring', 'stalk-color-below-ring'],
+    'Veil and Ring Characteristics': ['veil-type', 'veil-color', 'ring-number', 'ring-type'],
+    'Environmental Characteristics': ['population', 'habitat']
+}
+
+# Create a select box for the feature groups
+selected_group = st.selectbox('Select a feature group:', list(feature_groups.keys()))
+
+# Display the describe() output for the selected feature group
+st.subheader(f"{selected_group} Characteristics")
+st.dataframe(df[feature_groups[selected_group]].describe().transpose())
+
+# If you want to display the describe() output for all feature groups:
+for group_name, features in feature_groups.items():
+    if group_name == selected_group:  # Skip the selected group as it is already displayed
+        continue
+    st.subheader(f"{group_name} Characteristics")
+    st.dataframe(df[features].describe().transpose())
+
+
+
