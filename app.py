@@ -3,20 +3,7 @@ sys.path.append("G:/My Drive/Colab Notebooks/Mushroom")
 import streamlit as st
 from pages import home, recommender, regression, eda_ui, user_mgt_ui
 
-st.set_page_config(page_title="🍄Mushroom Dashboard App 📊", layout="wide")
-
-# Add CSS to keep sidebar always open
-st.markdown("""
-    <style>
-        .reportview-container .main .block-container {
-            max-width: 100%;
-        }
-        div[data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-            width: 100%;
-            max-width: 100%;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+st.set_page_config(page_title="🍄Mushroom Dashboard App 📊", layout="wide", initial_sidebar_state="expanded")
 
 # Main function for the app
 def main():
