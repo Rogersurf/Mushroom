@@ -5,13 +5,25 @@ from pages import home, recommender, regression, eda_ui, user_mgt_ui
 
 st.set_page_config(page_title="🍄Mushroom Dashboard App 📊", layout="wide")
 
+# Add CSS to keep sidebar always open
+st.markdown("""
+    <style>
+        .reportview-container .main .block-container {
+            max-width: 100%;
+        }
+        div[data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+            width: 100%;
+            max-width: 100%;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
 # Main function for the app
 def main():
 
-    # Sidebar
+    # Sidebar without page filename
     st.sidebar.markdown("<h1 style='text-align: center; color: blue;'>Mushroom Dashboard</h1>", unsafe_allow_html=True)
 
-    # Home button with icon
     if st.sidebar.button("🏠 Home"):
         st.session_state.page = "Home"
     
