@@ -1,53 +1,49 @@
 import sys
 sys.path.append("G:/My Drive/Colab Notebooks/Mushroom")
 import streamlit as st
-from pages import home, recommender, regression, eda_ui, user_mgt_ui  # <-- Include new page here
+from pages import home, recommender, regression, eda_ui, user_mgt_ui
 
 st.set_page_config(page_title="🍄Mushroom Dashboard App 📊", layout="wide")
 
-PAGES = {
-    "Home": home,
-    "Edible or Poisoning?": regression,
-    "Mushroom recommendation": recommender,
-    "EDA": eda_ui,
-    "User Management": user_mgt_ui  # <-- Add new page to the dict
-}
-
+# Main function for the app
 def main():
-    container = st.container()
 
-    with container:
-        st.markdown("<h1 style='text-align: center; color: blue;'>Welcome to Mushroom Dashboard</h1>", unsafe_allow_html=True)
+    # Sidebar
+    st.sidebar.markdown("<h1 style='text-align: center; color: blue;'>Mushroom Dashboard</h1>", unsafe_allow_html=True)
 
-        cols = st.columns(5)  # Five columns to accommodate all the pages
+    # Home button with icon
+    if st.sidebar.button("🏠 Home"):
+        st.session_state.page = "Home"
+    
+    if st.sidebar.button("🍄 Edible or Poisoning?"):
+        st.session_state.page = "Edibility"
 
-        with cols[0]:
-            st.markdown("🏠 **Home**", unsafe_allow_html=True)  # Added icons and descriptions
-            if st.button("Go to Home"):
-                home.app()
+    if st.sidebar.button("🔍 Mushroom recommendation"):
+        st.session_state.page = "Recommendation"
 
-        with cols[1]:
-            st.markdown("🍄 **Edibility Check**", unsafe_allow_html=True)  # You can change the icons as per your liking
-            if st.button("Edible or Poisoning?"):
-                regression.app()
+    if st.sidebar.button("📊 Exploratory Data Analysis"):
+        st.session_state.page = "EDA"
 
-        with cols[2]:
-            st.markdown("🔍 **Mushroom Recommendation**", unsafe_allow_html=True)
-            if st.button("Mushroom recommendation"):
-                recommender.app()
+    if st.sidebar.button("👥 User Management"):
+        st.session_state.page = "User Management"
 
-        with cols[3]:
-            st.markdown("📊 **Exploratory Data Analysis**", unsafe_allow_html=True)
-            if st.button("EDA"):
-                eda_ui.app()
+    # Main Content Area
+    if 'page' not in st.session_state:
+        st.session_state.page = "Home"
 
-        with cols[4]: 
-            st.markdown("👥 **User Management**", unsafe_allow_html=True)
-            if st.button("User Management"):
-                user_mgt_ui.app()
+    if st.session_state.page == "Home":
+        home.app()
+    elif st.session_state.page == "Edibility":
+        regression.app()
+    elif st.session_state.page == "Recommendation":
+        recommender.app()
+    elif st.session_state.page == "EDA":
+        eda_ui.app()
+    elif st.session_state.page == "User Management":
+        user_mgt_ui.app()
 
-    # Footer for the app
-    st.markdown("---")  # This adds a line for separation
+    # Footer
+    st.markdown("---")
     st.markdown("""
     <p style='text-align: center;'>
     🍄 Mushroom Dash © 2023 | Created by <a href="https://www.linkedin.com/in/roger-braun" target="_blank">Roger Braun</a>
