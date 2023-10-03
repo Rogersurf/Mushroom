@@ -1,8 +1,8 @@
 import streamlit as st
 
 def app():
-    st.title('Home Page')
-    st.write('Welcome to the Home Page!')
+    st.title('Mushroom Dashboard')
+    st.write('Welcome to the Mushroom Dashboard!')
     # Container for the Title
     with st.container():
         st.markdown("""

@@ -5,13 +5,6 @@ import altair as alt
 import matplotlib.pyplot as plt
 
 def app():
-    # Set Page Config
-    st.set_page_config(
-        page_title="Final Assignment - Roger Braun",
-        page_icon="✅",
-        layout="wide",
-    )
-
     # Load Data
     @st.cache_data
     def load_data():

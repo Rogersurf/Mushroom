@@ -1,0 +1,37 @@
+##3. Build a Simple Recommender System
+Now that we have cleaned and preprocessed the data, let's move on to building a recommender system. This process consists of three steps:
+
+
+> - Step 1: Label Encoding and Matrix Creation
+> - Step 2: Perform Dimensionality Reduction
+> - Step 3: Calculate The Similarity Matrix
+
+Question 2: Why Do We Use Sparse Matrices in Recommender Systems?
+In the context of recommender systems, particularly those dealing with user-item interactions, sparse matrices play a crucial role. They are an efficient way to represent large matrices that are mostly populated with zero values. Sparse matrices are memory-efficient, computationally efficient, and scalable.
+
+Memory Efficiency: Sparse matrices store only the non-zero elements and their indices, which saves a significant amount of memory.
+
+Computational Efficiency: Certain matrix operations can be executed faster using sparse matrices, as they are optimized to ignore zero elements.
+
+Scalability: As your data grows, using dense matrices could become impractical due to memory limitations. Sparse matrices allow your system to scale more easily.
+
+In this notebook, we use the coo_matrix from SciPy's sparse package to represent the user-item interaction matrix. This representation allows us to efficiently store and manipulate the data.
+
+Exercise 1: Implementing the first step using both username and country columns
+Implement the first step of a recommender system using both username and country as input parameters
+
+3.2. Perform Dimensionality Reduction
+This section uses Truncated Singular Value Decomposition (SVD) to reduce the dimensionality of the user-item interaction matrix.
+
+####**Question 3: Why Is Dimensionality Reduction Important in Recommender Systems?**
+
+Dimensionality reduction is a critical aspect of building efficient and effective recommender systems for several reasons:
+
+- **Computational Efficiency:** Reducing the number of dimensions can significantly speed up algorithmic computations and save storage space, making the system more scalable.
+
+
+- **Latent Feature Discovery:** Techniques like Singular Value Decomposition (SVD) can uncover hidden features that capture the underlying structure of the data more effectively than the original high-dimensional features.
+
+####**Question 4: What is the main difference between item-based and user-based recommender systems?**
+
+Item-based recommender systems focus on recommending travel destinations based on similarities between the destinations themselves, while user-based recommender systems make recommendations based on similarities between users' past behaviors and preferences. Item-based is generally good for new users, whereas user-based provides more personalized recommendations but may struggle with new users.
