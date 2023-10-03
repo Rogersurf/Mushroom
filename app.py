@@ -1,6 +1,7 @@
 import streamlit as st
 import importlib
 
+
 # Use importlib to load your pages
 home = importlib.import_module("pages.1_🏠_Home")
 regression = importlib.import_module("pages.2_🍄_Edible_or_Poisoning")

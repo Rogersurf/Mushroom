@@ -54,9 +54,12 @@ def load_models():
     reduced_matrix = joblib.load(BASE_PATH / 'reduced_matrix.pkl')
     return le_username, svd, reduced_matrix
 
-def app():
+def prepare_data():
     df = load_data()
     interaction_matrix = create_interaction_matrix(df, 'username', 'item', 'rating', threshold=3)
     le_username = get_username_encoder(df)
     svd, reduced_matrix = reduce_dimensionality(interaction_matrix)
     save_models(le_username, svd, reduced_matrix)
+
+if __name__ == "__main__":
+    prepare_data()
