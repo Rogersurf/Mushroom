@@ -1,21 +1,8 @@
 import streamlit as st
 
 def app():
-    st.title('Mushroom Dashboard')
-    st.write('Welcome to the Mushroom Dashboard!')
     # Container for the Title
-    with st.container():
-        st.markdown("""
-        <style>
-        .big-font {
-            font-size:50px !important;
-            color: #4f8bf9;  # You can change the color to a preferred one
-            text-align: center;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        st.markdown('<p class="big-font">Mushroom Dashboard</p>', unsafe_allow_html=True)
-        
+    with st.container():      
         # Displaying the image
         st.image("G:\My Drive\Colab Notebooks\Mushroom\Data\Images\mushroom menu.jpg", use_column_width=True)  # use_column_width resizes the image to the column width
         
