@@ -10,7 +10,7 @@ def app():
     def load_data():
 
         ## Define the file path
-        filename = "G:\My Drive\Colab Notebooks\Mushroom\Data\Datasets\mushroom.pkl"
+        filename = "Data/Datasets/mushroom.pkl"
 
         # Load your data here
         df = pd.read_pickle(filename)
