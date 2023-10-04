@@ -5,7 +5,7 @@ import importlib
 # Use importlib to load your pages
 home = importlib.import_module("pages.1_🏠_Home")
 regression = importlib.import_module("pages.2_🍄_Edible_or_Poisoning")
-recommender = importlib.import_module("pages.3_🔍_Mushroom_recommendation")
+recommender = importlib.import_module("pages.3_🔍_Mushroom_recommendation)
 eda_ui = importlib.import_module("pages.4_📊_Exploratory_Data_Analysis")
 user_mgt_ui = importlib.import_module("pages.5_👥_User_Management")
 

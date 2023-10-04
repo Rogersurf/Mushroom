@@ -1,3 +1,5 @@
+# mushroom_recommendation.py
+
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.decomposition import TruncatedSVD
@@ -5,6 +7,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 import joblib
 import numpy as np
 from pathlib import Path
+
+
+recommender = importlib.import_module("pages.3_🔍_Mushroom_recommendation)
 
 BASE_PATH = Path("./Data/Models")
 
@@ -54,9 +59,13 @@ def load_models():
     reduced_matrix = joblib.load(BASE_PATH / 'reduced_matrix.pkl')
     return le_username, svd, reduced_matrix
 
-def app():
+# This function will be used in the main app
+def get_top_recommendations(username):
     df = load_data()
     interaction_matrix = create_interaction_matrix(df, 'username', 'item', 'rating', threshold=3)
     le_username = get_username_encoder(df)
     svd, reduced_matrix = reduce_dimensionality(interaction_matrix)
-    save_models(le_username, svd, reduced_matrix)
+    return get_recommendations(username, le_username, reduced_matrix)
+
+if __name__ == "__main__":
+    app()

@@ -3,6 +3,8 @@ from pathlib import Path
 
 from Db import db_user_content
 
+recommender = importlib.import_module("pages.3_🔍_Mushroom_recommendation)
+
 BASE_PATH = Path("./Data/Models")
 
 def load():
@@ -18,7 +20,7 @@ def app():
 
     if user_input:
         try:
-            top5 = db_user_content.get_recommendations(user_input, le_username, reduced_matrix)
+            top5 = db_user_content.get_top_recommendations(user_input)
 
             if top5:
                 st.markdown("### Top 5 Mushroom Recommendations for You")
