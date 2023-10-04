@@ -3,45 +3,113 @@ import pandas as pd
 from joblib import load
 from sklearn.tree import DecisionTreeClassifier
 import pickle
+import streamlit as st
+import pandas as pd
+import pickle
+from sklearn.preprocessing import OneHotEncoder
+import numpy as np
 
 
 # Define base path
-base_path = 'G:/My Drive/Colab Notebooks/Mushroom/'
+BASE_PATH = "G:\\My Drive\\Colab Notebooks\\Mushroom\\"
 
-# Load the model using pickle and base_path
-with open(base_path + 'Data/Models/Tree/dt_model.pkl', 'rb') as f:
+FEATURE_COLUMNS = [
+    "cap-shape", "cap-surface", "cap-color", "bruises", "odor", "gill-attachment",
+    "gill-spacing", "gill-size", "gill-color", "stalk-shape", "stalk-root",
+    "stalk-surface-above-ring", "stalk-surface-below-ring", "stalk-color-above-ring",
+    "stalk-color-below-ring", "veil-type", "veil-color", "ring-number", "ring-type",
+    "spore-print-color", "population", "habitat"
+]
+
+class_map = {'e': 'edible', 'p': 'poisonous'}
+
+# Load the model and encoder
+with open(BASE_PATH + 'Data/Models/Tree/dt_model.pkl', 'rb') as f:
     best_dt = pickle.load(f)
 
+with open(BASE_PATH + 'Data/Models/Tree/encoder.pkl', 'rb') as f:
+    encoder = pickle.load(f)
+
+with open(BASE_PATH + 'Data/Models/Tree/scaler.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+
+with open(BASE_PATH + 'Data/Models/Tree/pca_model.pkl', 'rb') as f:
+    pca_model = pickle.load(f)
+
+with open(BASE_PATH + 'Data/Models/Tree/kmeans_model.pkl', 'rb') as f:  # Assuming you've saved the KMeans model with this name
+    kmeans = pickle.load(f)
+
 def preprocess_input(input_data):
-    # Process the input data to match the format your model expects
-    # This might include encoding, normalization, etc.
-    # For simplicity, let's assume the data is already in the correct format
-    processed_data = input_data
-    return processed_data
+    # One-hot encode the data using the saved encoder
+    encoded_data = encoder.transform(input_data)
+
+    # Scaling the data using the saved scaler
+    scl_data = scaler.transform(encoded_data)
+    
+    # Apply PCA transformation
+    pca_transformed_data = pca_model.transform(scl_data)
+    
+    # Convert PCA-transformed data to DataFrame
+    pca_transformed_df = pd.DataFrame(data=pca_transformed_data, columns=['PC1', 'PC2'])
+
+    # Assigning cluster labels
+    pca_transformed_df['cluster'] = kmeans.predict(scl_data)
+    
+    return pca_transformed_df
+
 
 def app():
     st.title("Mushroom Edibility Predictor")
 
-    # Display saved data
-    data = pd.read_csv('path_to_saved_data.csv')
-    st.write(data)
+    input_data = {
+    'cap-shape': 'convex',
+    'cap-surface': 'scaly',
+    'cap-color': 'brown',
+    'bruises': 'bruises',
+    'odor': 'pungent',
+    'gill-attachment': 'free',
+    'gill-spacing': 'close',
+    'gill-size': 'narrow',
+    'gill-color': 'black',
+    'stalk-shape': 'enlarging',
+    'stalk-root': 'equal',
+    'stalk-surface-above-ring': 'smooth',
+    'stalk-surface-below-ring': 'smooth',
+    'stalk-color-above-ring': 'white',
+    'stalk-color-below-ring': 'white',
+    'veil-type': 'partial',
+    'veil-color': 'white',
+    'ring-number': 'one',
+    'ring-type': 'pendant',
+    'spore-print-color': 'black',
+    'population': 'scattered',
+    'habitat': 'woods'
+}
 
-    # User input
-    # Let's assume you have two features for simplicity: cap_shape and cap_color
-    cap_shape = st.selectbox('Select Cap Shape', ['bell', 'conical', 'convex', 'flat', 'knobbed', 'sunken'])
-    cap_color = st.selectbox('Select Cap Color', ['brown', 'yellow', 'white', 'gray', 'red', 'pink', 'buff', 'purple', 'cinnamon', 'green'])
+    # Convert input_data_dict to DataFrame
+    input_data_df = pd.DataFrame([input_data])
+    # Display input data
+    st.write(input_data_df)
+    input_data_df = input_data_df.reset_index(drop=True)
 
-    # Preprocess input
-    input_data = pd.DataFrame([[cap_shape, cap_color]], columns=['cap_shape', 'cap_color'])
-    processed_data = preprocess_input(input_data)
+    # Preprocess the input data
+    processed_data = preprocess_input(input_data_df)
+    print(processed_data.shape)
 
     # Model prediction
     if st.button("Predict"):
         prediction = best_dt.predict(processed_data)
-        if prediction[0] == 1:  # Assuming 1 means edible and 0 means not
+        st.write(prediction)
+    
+        # Checking the first element of the prediction array
+        # Assuming the prediction is for a single input and you want the first result
+        if prediction[0] == 'e':
             st.success("The mushroom is edible!")
         else:
             st.error("The mushroom is poisonous!")
+
+
+        
 
 if __name__ == '__main__':
     app()
