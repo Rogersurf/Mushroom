@@ -7,9 +7,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 import joblib
 import numpy as np
 from pathlib import Path
+import importlib
 
 
-recommender = importlib.import_module("pages.3_🔍_Mushroom_recommendation)
+recommender = importlib.import_module("pages.3_🔍_Mushroom_recommendation")
 
 BASE_PATH = Path("./Data/Models")
 
@@ -67,5 +68,16 @@ def get_top_recommendations(username):
     svd, reduced_matrix = reduce_dimensionality(interaction_matrix)
     return get_recommendations(username, le_username, reduced_matrix)
 
+def app():
+    df = load_data()
+    interaction_matrix = create_interaction_matrix(df, 'username', 'item', 'rating', threshold=3)
+    le_username = get_username_encoder(df)
+    svd, reduced_matrix = reduce_dimensionality(interaction_matrix)
+    return le_username, svd, reduced_matrix
+
+def main():
+    le_username, svd, reduced_matrix = app()
+    save_models(le_username, svd, reduced_matrix)
+
 if __name__ == "__main__":
-    app()
+    main()

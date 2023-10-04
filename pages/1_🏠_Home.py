@@ -1,9 +1,11 @@
 import streamlit as st
 from pathlib import Path
+import importlib
 
 from Db import db_user_content
 
-recommender = importlib.import_module("pages.3_🔍_Mushroom_recommendation)
+recommender = importlib.import_module("pages.3_🔍_Mushroom_recommendation")
+
 
 BASE_PATH = Path("./Data/Models")
 
